@@ -1,5 +1,5 @@
 ---
-title: "Final_Project"
+title: "Final Project"
 author: Tori Macfarlan
 output: pdf_document
 ---
@@ -11,10 +11,15 @@ options(width = 100)
 
 ## Introduction
 
-an introduction where you introduce the research question and hypothesis and briefly describe why it is interesting
+How much does a leader impact the policies of their country? Does the death of a leader, especially an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will demonstrate a leader's assassination does not have a significant impact on the resulting polity of a country, but an assassination attempt (regardless of success) correlates with an increase in civil wars and/or international conflicts. It is possible the type of government that makes assassination attempts more likely is also the type of government more inclined towards political turmoil in general (though an assassination attempt could exacerbate it). 
 
 ## Data
+```{r}
+leaders <- read.csv("data/leaders.csv")
 
+
+
+```
 
 a data section that briefly describes the data source, describes how the key dependent and independent variables are measured (e.g., a survey, statistical model, or expert coding), and also produces a plot that summarizes the dependent variable
 
