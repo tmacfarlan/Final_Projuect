@@ -1,0 +1,29 @@
+---
+title: "Final_Project"
+author: Tori Macfarlan
+output: pdf_document
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(width = 100)
+```
+
+## Introduction
+
+an introduction where you introduce the research question and hypothesis and briefly describe why it is interesting
+
+## Data
+
+
+a data section that briefly describes the data source, describes how the key dependent and independent variables are measured (e.g., a survey, statistical model, or expert coding), and also produces a plot that summarizes the dependent variable
+
+## Results
+
+a results section that contains a scatterplot of the main relationship of interest and output for the main regression of interest
+
+## Conclusion
+
+a brief (one paragraph) concluding section that summarizes your results, assesses the extent to which you find support for your hypothesis, describes limitations of your analysis and threats to inference, and states how your analysis could be improved (e.g., improved data that would be useful to collect)
+
+
