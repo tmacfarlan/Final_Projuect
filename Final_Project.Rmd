@@ -39,7 +39,7 @@ leaders$result.bin <- ifelse(as.numeric(leaders$result) == 1 | as.numeric(leader
 range(leaders$year)
 
 ```
-The data for this discussion comes from the Polity Project. This organization evaluated regimes from `r range(leaders$year)[1] ` to `r range(leaders$year)[2] ` and quantified the type of government "from −10 (hereditary monarchy) to 10 (consolidated democracy)" (Imai, Kosuke. QSS). The data set contains leaders who did not experience assassination attempts and leaders who experienced one or more assassination attempts. The data evaluates the type of regime prior to and after (if applicable) any assassination attempts. The data also notates whether or not a country was involved in civil war or international conflict before and after assassination attempts. 
+The data for this discussion comes from the Polity Project. This organization evaluated regimes from `r range(leaders$year)[1] ` to `r range(leaders$year)[2] ` and quantified the type of government "from -10 (hereditary monarchy) to 10 (consolidated democracy)" (Imai, Kosuke. QSS). The data set contains leaders who did not experience assassination attempts and leaders who experienced one or more assassination attempts. The data evaluates the type of regime prior to and after (if applicable) any assassination attempts. The data also notates whether or not a country was involved in civil war or international conflict before and after assassination attempts. 
 
 
 
