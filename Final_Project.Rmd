@@ -70,15 +70,16 @@ The information above begs the question: is there some a confounding variable in
 
 ```{r}
 
+turmoil_pretype <- lm(leaders$turmoil ~ leaders$politybefore)
+summary(turmoil_pretype)
 
-
-
+plot(leaders$politybefore, leaders$turmoil, main = "Impact of Government Type on Turmoil" , xlab = "Type of Government" , ylab =  "Change in Turmoil")
 
 
 ```
 
 
 ## Conclusion
-The dependent variable data generally fits into a normal distribution, with the highest frequency of data changes occurring in the middle section, showing the least significant shift in polity following an assassination attempt. 
+The dependent variable data generally fits into a normal distribution, with the highest frequency of data changes occurring in the middle section, showing the least significant shift in polity following an assassination attempt. (Still working with file, more analysis to follow)
 
 
