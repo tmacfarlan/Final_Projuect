@@ -11,7 +11,7 @@ options(width = 100)
 
 ## Introduction
 
-How much does a leader impact the policies of their country? Does the death of a leader, especially an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will demonstrate a leader's assassination does not have a significant impact on the resulting polity of a country, but an assassination attempt (regardless of success) correlates with an increase in civil wars and/or international conflicts. It is possible the type of government that makes assassination attempts more likely is also the type of government more inclined towards political turmoil in general (though an assassination attempt could exacerbate it). 
+Do leaders really impact their governments that significantly? Does the death of a leader, especially an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will demonstrate a leader's assassination does not have a significant impact on the polity of a country following the event, but an assassination attempt (regardless of success) correlates with an increase in civil wars and/or international conflicts. This discussion also theorizes less democratic governments correlate with an increase in turmoil following an assassination attempt.  
 
 ## Data
 ```{r}
@@ -28,18 +28,49 @@ leaders$polity.change <- (leaders$polityafter - leaders$politybefore)
 hist(leaders$polity.change , main = "Polity Change Following Assassination Attempts" , xlab = "Significance of Polity Change")
 
 ```
-The data for this discussion comes from the Polity Project. This organization evaluated regimes from `r range(leaders$year)[1] ` to `r range(leaders$year)[2] ` and quantified the type of government "from -10 (hereditary monarchy) to 10 (consolidated democracy)" (Imai, Kosuke. QSS). The data set contains leaders who did not experience assassination attempts and leaders who experienced one or more assassination attempts. The data evaluates the type of regime prior to and after (if applicable) any assassination attempts. The data also notates whether or not a country was involved in civil war or international conflict before and after assassination attempts. 
+The data for this discussion comes from the Polity Project. This organization evaluated regimes from `r range(leaders$year)[1] ` to `r range(leaders$year)[2] ` and quantified the type of government "from -10 (hereditary monarchy) to 10 (consolidated democracy)" (Imai, Kosuke. QSS). The data set contains leaders and governments that experienced one or more assassination attempts. The data evaluates the type of regime prior to and after the assassination attempts. The data also notates whether or not a country was involved in civil war or international conflict before and after assassination attempts. This data set is particularly useful for evaluating the questions presented in this discussion because it uses expert coding to quantify the type of government, a categorical variable. The observations in the data set contain characteristics that are diverse and roughly comparable to the actual population (such as age of the leader, year of the assassination attempt) in order to account for potential confounding factors.
 
-The graph above depicts the extent to which the type of government changed following an assassination attempt. The data includes governments whose leaders did not experience an assassination attempt (*considering splitting the data set up in this section to show countries that did experience an assassination attempt juxtaposed to those that did not).
+The graph above depicts the extent to which the type of government changed following an assassination attempt.
 
 
 ## Results
 
-Below, we evaluate the change in regime type as 
+We will evaluate the change in regime type as a function of whether or not a government's leader died in an assassination attempt. Given the success or failure of an assassination attempt is considered random in this data set, the extent to which a leader's assassination results in a significant polity change will be evaluated. To support the hypothesis above, there should be a low correlation between assassination of a leader and the resulting polity change. 
 
-a results section that contains a scatterplot of the main relationship of interest and output for the main regression of interest
+
 
 ```{r}
+
+death_fit <- lm(leaders$polity.change ~ leaders$result)
+
+death_fit_sum <- summary(death_fit)
+
+death_fit_sum
+plot(leaders$result, leaders$polity.change, main = "Polity Changes Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Polity Change")
+
+```
+
+In addition to the change in polity, we are evaluating the extent to which the countries in the data experienced increased turmoil following an assassination attempt. If the secondary hypothesis above is correct, an increase in turmoil (civil war OR international war) will correlate with successful assassinations. 
+
+```{r}
+
+leaders$turmoil <- (leaders$interwarafter + leaders$civilwarafter) - (leaders$interwarbefore + leaders$civilwarbefore)
+
+
+turmoil_fit <- lm(leaders$turmoil ~ leaders$result.bin)
+turmoil_fit_sum <- summary(turmoil_fit)
+turmoil_fit_sum
+plot(leaders$result, leaders$turmoil, main = "Turmoil Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Turmoil Change")
+
+```
+
+
+
+The information above begs the question: is there some a confounding variable in the data causing increased turmoil but not necessarily a change in polity? Below we look at different types of governments (prior to an assassination attempt) and evaluate this question relative to that variable. 
+
+```{r}
+
+
 
 
 
@@ -48,6 +79,6 @@ a results section that contains a scatterplot of the main relationship of intere
 
 
 ## Conclusion
-The data generally fits into a normal distribution, with the highest frequency of data changes occurring in the middle section, showing the least significant shift in polity following an assassination attempt. 
+The dependent variable data generally fits into a normal distribution, with the highest frequency of data changes occurring in the middle section, showing the least significant shift in polity following an assassination attempt. 
 
 
