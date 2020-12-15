@@ -11,7 +11,9 @@ options(width = 100)
 
 ## Introduction
 
-Do leaders really impact their governments that significantly? Does the death of a leader, especially in an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will seek to demonstrate a leader's assassination does not have a significant impact on the polity of a country following the event, but an assassination attempt (regardless of success) cause with an increase in civil wars and/or international conflicts. This discussion also theorizes less democratic governments cause an increase in turmoil following an assassination attempt.  
+Do leaders really impact their governments that significantly? Does the death of a leader, especially in an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will seek to demonstrate a leader's assassination does not have a significant impact on the polity of a country following the event, but an assassination attempt (regardless of success) cause with an increase in civil wars and/or international conflicts. This discussion also theorizes less democratic governments cause an increase in turmoil following an assassination attempt. 
+
+All conclusions concerning statistical significance will be performed at a p < 0.05 level.
 
 ## Data
 ```{r}
@@ -65,7 +67,9 @@ boxplot(leaders$polity.change ~ leaders$result.bin, main = "Polity Changes Follo
 stargazer::stargazer(death_fit_bin, header = FALSE, label="label Binary", dep.var.caption = "Polity Change")
 
 ```
+When we simplify the data to evaluate polity change based on the success or failure of the assassination attempts, we get the results above. The chart and second table depict a very low r-squared variable and a p-value higher than 0.1. Collectively this means the likelihood of causality between a leader's death and polity change is very low and we cannot reject the chance that any correlation we do see is caused by chance. 
 
+The hypothesis of this paper was framed in the negative, essentially assuming the null hypothesis. The results of Table 2 provide strong support for the paper's hypothesis. 
 
 
 In addition to the change in polity, we are evaluating the extent to which the countries in the data experienced increased turmoil following an assassination attempt. If the secondary hypothesis above is correct, an increase in turmoil (civil war OR international war) will correlate with successful assassinations. 
@@ -101,7 +105,7 @@ plot(leaders$politybefore, leaders$turmoil, main = "Impact of Government Type on
 stargazer::stargazer(turmoil_pretype, header = FALSE, label="label3", dep.var.caption = "Change in Turmoil")
 
 ```
-The graph and table above show a low correlation between the type of government prior to the assassination attempt and the resulting turmoil.
+The graph and Table 4 show a low correlation between the type of government prior to the assassination attempt and the resulting turmoil. The r-squared value is very low, indicating a poor correlation, though the p-value is less than 0.05 so the results are probably not random, just poorly correlated. This directly contradicts the tertiary hypothesis of this paper: a country's polity has little impact on whether or not it will be engulfed in turmoil following an assassination attempt. 
 
 
 ```{r}
@@ -117,14 +121,14 @@ plot(leaders$turmoil, leaders$turmoil_before, main = "Impact of Turmoil Before o
 stargazer::stargazer(turmoil_preturmoil, header = FALSE, label="label4", dep.var.caption = "Change in Turmoil")
 
 ```
-Table 4 and the above chart demonstrate a higher correlation. Here the r-squared value is .264, which is a relatively high correlation for statistical analysis in the social sciences. Further, the p-value is less than 0.01, indicating there is a very low probability of this correlation appearing by chance. The low p-value allows us to reject the null hypothesis. Turmoil prior to an assassination attempt seems to have a strong causality to the turmoil following an assassination attempt, casting significant doubt on our secondary hypothesis (that assassination attempts cause turmoil).
+Table 5 and the associated chart demonstrate a higher correlation. Here the r-squared value is .264, which is a relatively high correlation for statistical analysis in the social sciences. Further, the p-value is less than 0.01, indicating there is a very low probability of this correlation appearing by chance. The low p-value allows us to reject the null hypothesis. Turmoil prior to an assassination attempt seems to have a strong causality to the turmoil following an assassination attempt, casting significant doubt on our secondary hypothesis (that assassination attempts cause turmoil).
 
 
 ```{r, message = FALSE}
 library(tidyverse)
 n_by_year <- leaders %>% group_by(year) %>% summarize(n = n())
 
-plot(n_by_year$year, n_by_year$n)
+plot(n_by_year$year, n_by_year$n, main = "Assassination Attempts by Year" , xlab = "Year" , ylab = "Number of Assassination Attempts")
 
 n_by_year_lm <- lm(n_by_year$n ~ n_by_year$year)
 n_by_year_lm_sum <- summary(n_by_year_lm)
@@ -134,7 +138,13 @@ n_by_year_lm_sum <- summary(n_by_year_lm)
 stargazer::stargazer(n_by_year_lm, header = FALSE, label="label5")
 
 ```
+The graph of "Assassination Attempts by Year" shows a visual depiction of the number of assassination attempts by year. How world events impact assassination attempts should be considered a potential confounding variable. This graph shows a relatively constant number of assassination attempts, though it has peaks just before WWII and the end of the Cold War, as well as a dip during WWII. This does not definitively impact the hypothesis of this paper, but does verify one problematic variable: the assassination attempts in our data did not occur in a vacuum, but in an increasingly globalized environment with many variables. 
+
 ## Conclusion
-The dependent variable data generally fits into a normal distribution, with the highest frequency of data changes occurring in the middle section, showing the least significant shift in polity following an assassination attempt. (Still working with file, more analysis to follow)
+This paper sought to prove three hypotheses in descending importance: the death of a leader does not result in polity changes, assassination attempts cause increased turmoil, and less democratic governments experience a greater increase in turmoil following an assassination attempt than their democratic counterparts. A strength of the data was the randomness of the success or failure of the assassination attempts and the large swaths of data spanning many countries from every region in the world and more than a century's worth of assassination attempts. Initially, I considered the lack of countries without an assassination attempt to be a weakness in the data, but ultimately realized it allows the data to control for other confounding variables instead. 
+
+As demonstrated in the Results Section, the first hypothesis was upheld. Granted, a hypothesis that is functionally a null hypothesis is not challenging to reinforce, but the data seems to agree that the death of a leader on its own does not correlate with or cause polity change. A weak correlation between death of a leader and turmoil seems to exist, but further analysis showed pre-existing turmoil to better correlate with turmoil following an assassination attempt. The high r-squared value and low p-value in this evaluation supported turmoil before an assassination attempt causes turmoil following the attempt. While this is not definite, it is sufficient to say the second hypothesis is not supported by the data. Finally, the assessment in Table 4 indicates polity type does not correlate with increased turmoil, causing us to reject the third hypothesis. 
+
+While there are many strengths in the data and ways to analyze the variables it contains, there is not enough information to account for all the potential confounding variables. The final chart alone addresses variables that could be introduced from international conflicts. This data set does not address incidents like a nation's GDP, natural disasters, neighboring nations, or a host of other variables. While there are some indications of causality in the information above, the inherent uncertainty of this project means the above results should be considered with only a middling degree of confidence. 
 
 
