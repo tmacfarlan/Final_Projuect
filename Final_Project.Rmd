@@ -48,8 +48,9 @@ death_fit_sum <- summary(death_fit)
 plot(leaders$result, leaders$polity.change, main = "Polity Changes Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Polity Change", xaxt= 'n', bty='L')
 axis(1, seq(0,10,1))
 
-knitr::kable(data.frame(Value=c(1:10), Results=levels(leaders$result)))
+knitr::kable(data.frame(`X-Axis Value`=c(1:10), Results=levels(leaders$result)), label="label2")
 ```
+The chart above shows more significant policy changes in the section of the chart where the leader died (Assassination Results 1-4). However, there is still some polity change in the remainder of the graph where the leader survived.
 
 In addition to the change in polity, we are evaluating the extent to which the countries in the data experienced increased turmoil following an assassination attempt. If the secondary hypothesis above is correct, an increase in turmoil (civil war OR international war) will correlate with successful assassinations. 
 
@@ -64,11 +65,12 @@ turmoil_fit_sum <- summary(turmoil_fit)
 plot(leaders$result, leaders$turmoil, main = "Turmoil Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Turmoil Change", xaxt= 'n')
 axis(1, seq(0,10,1))
 
+knitr::kable(data.frame(`X-Axis Value`=c(1:10), Results=levels(leaders$result)), label="label1")
+
 ```
+The data above shows a statistically significant correlation between the results of an assassination attempts and the change in turmoil after. Leader deaths that occur immediately following the assassination (within a day) and over a longer period (between a week an a month) correlated with a decrease in overall turmoil. This particular statistic appears counter-intuitive, particularly given we do not see the same trend in leaders who died between a week and a day. While a loose correlation exists, we should look for confounding variables in the data or find a way to control for potentially unknown confounding variables.
 
-
-
-The information above begs the question: is there some a confounding variable in the data causing increased turmoil but not necessarily a change in polity? Below we look at different types of governments (prior to an assassination attempt) and evaluate this question relative to that variable. 
+Below we look at different types of governments (prior to an assassination attempt) and evaluate the relationship between polity and turmoil. 
 
 ```{r}
 
@@ -80,7 +82,7 @@ plot(leaders$politybefore, leaders$turmoil, main = "Impact of Government Type on
 ```
 
 ```{r, results='asis', message = FALSE}
-stargazer::stargazer(turmoil_pretype, header = FALSE)
+stargazer::stargazer(turmoil_pretype, header = FALSE, label="label3")
 
 ```
 
@@ -93,7 +95,7 @@ plot(leaders$turmoil, leaders$turmoil_before, main = "Impact of Turmoil Before o
 
 ```
 ```{r, results='asis', message = FALSE}
-stargazer::stargazer(turmoil_preturmoil, header = FALSE)
+stargazer::stargazer(turmoil_preturmoil, header = FALSE, label="label4")
 
 ```
 
@@ -108,7 +110,7 @@ n_by_year_lm_sum <- summary(n_by_year_lm)
 
 ```
 ```{r, results='asis', message = FALSE}
-stargazer::stargazer(n_by_year_lm, header = FALSE)
+stargazer::stargazer(n_by_year_lm, header = FALSE, label="label5")
 
 ```
 ## Conclusion
