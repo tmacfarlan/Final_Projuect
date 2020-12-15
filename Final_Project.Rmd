@@ -11,7 +11,7 @@ options(width = 100)
 
 ## Introduction
 
-Do leaders really impact their governments that significantly? Does the death of a leader, especially an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will demonstrate a leader's assassination does not have a significant impact on the polity of a country following the event, but an assassination attempt (regardless of success) correlates with an increase in civil wars and/or international conflicts. This discussion also theorizes less democratic governments correlate with an increase in turmoil following an assassination attempt.  
+Do leaders really impact their governments that significantly? Does the death of a leader, especially in an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will demonstrate a leader's assassination does not have a significant impact on the polity of a country following the event, but an assassination attempt (regardless of success) correlates with an increase in civil wars and/or international conflicts. This discussion also theorizes less democratic governments correlate with an increase in turmoil following an assassination attempt.  
 
 ## Data
 ```{r}
@@ -28,9 +28,10 @@ leaders$polity.change <- (leaders$polityafter - leaders$politybefore)
 hist(leaders$polity.change , main = "Polity Change Following Assassination Attempts" , xlab = "Significance of Polity Change")
 
 ```
-The data for this discussion comes from the Polity Project. This organization evaluated regimes from `r range(leaders$year)[1] ` to `r range(leaders$year)[2] ` and quantified the type of government "from -10 (hereditary monarchy) to 10 (consolidated democracy)" (Imai, Kosuke. QSS). The data set contains leaders and governments that experienced one or more assassination attempts. The data evaluates the type of regime prior to and after the assassination attempts. The data also notates whether or not a country was involved in civil war or international conflict before and after assassination attempts. This data set is particularly useful for evaluating the questions presented in this discussion because it uses expert coding to quantify the type of government, a categorical variable. The observations in the data set contain characteristics that are diverse and roughly comparable to the actual population (such as age of the leader, year of the assassination attempt) in order to account for potential confounding factors.
+The data for this discussion comes from the Polity Project. This organization evaluated regimes from `r range(leaders$year)[1] ` to `r range(leaders$year)[2] ` and quantified the type of government "from -10 (hereditary monarchy) to 10 (consolidated democracy)" (Imai, Kosuke. QSS). The data set contains leaders and governments that experienced one or more assassination attempts. The data evaluates the type of regime prior to and after the assassination attempts. The data also notates whether or not a country was involved in civil war or international conflict before and after assassination attempts. This data set is particularly useful for evaluating the questions presented in this discussion because it uses expert coding to quantify the type of government, a categorical variable. The observations in the data set contain characteristics that are diverse and roughly comparable to the actual population (such as age of the leader, year of the assassination attempt) in order to account for potential confounding factors. 
 
-The graph above depicts the extent to which the type of government changed following an assassination attempt.
+The graph above depicts the extent to which the type of government changed following an assassination attempt. A cursory glance seems to support the hypothesis that the type of government did not change significantly following an assassination attempt, but we will evaluate this in greater detail below.
+
 
 
 ## Results
@@ -40,14 +41,14 @@ We will evaluate the change in regime type as a function of whether or not a gov
 
 
 ```{r}
-
 death_fit <- lm(leaders$polity.change ~ leaders$result)
 
 death_fit_sum <- summary(death_fit)
 
-death_fit_sum
-plot(leaders$result, leaders$polity.change, main = "Polity Changes Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Polity Change")
+plot(leaders$result, leaders$polity.change, main = "Polity Changes Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Polity Change", xaxt= 'n', bty='L')
+axis(1, seq(0,10,1))
 
+knitr::kable(data.frame(Value=c(1:10), Results=levels(leaders$result)))
 ```
 
 In addition to the change in polity, we are evaluating the extent to which the countries in the data experienced increased turmoil following an assassination attempt. If the secondary hypothesis above is correct, an increase in turmoil (civil war OR international war) will correlate with successful assassinations. 
@@ -55,12 +56,13 @@ In addition to the change in polity, we are evaluating the extent to which the c
 ```{r}
 
 leaders$turmoil <- (leaders$interwarafter + leaders$civilwarafter) - (leaders$interwarbefore + leaders$civilwarbefore)
-
+leaders$turmoil_before <- (leaders$interwarbefore + leaders$civilwarbefore)
+leaders$turmoil_after <- (leaders$interwarafter + leaders$civilwarafter)
 
 turmoil_fit <- lm(leaders$turmoil ~ leaders$result.bin)
 turmoil_fit_sum <- summary(turmoil_fit)
-turmoil_fit_sum
-plot(leaders$result, leaders$turmoil, main = "Turmoil Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Turmoil Change")
+plot(leaders$result, leaders$turmoil, main = "Turmoil Following an Assassination Attempt" , xlab = "Assassination Results" , ylab = "Turmoil Change", xaxt= 'n')
+axis(1, seq(0,10,1))
 
 ```
 
@@ -71,14 +73,44 @@ The information above begs the question: is there some a confounding variable in
 ```{r}
 
 turmoil_pretype <- lm(leaders$turmoil ~ leaders$politybefore)
-summary(turmoil_pretype)
+turmoil_pretype_sum <- summary(turmoil_pretype)
 
 plot(leaders$politybefore, leaders$turmoil, main = "Impact of Government Type on Turmoil" , xlab = "Type of Government" , ylab =  "Change in Turmoil")
 
+```
+
+```{r, results='asis', message = FALSE}
+stargazer::stargazer(turmoil_pretype, header = FALSE)
 
 ```
 
+```{r}
 
+turmoil_preturmoil <- lm(leaders$turmoil ~ leaders$turmoil_before )
+turmoil_preturmoil_sum <- summary(turmoil_preturmoil)
+
+plot(leaders$turmoil, leaders$turmoil_before, main = "Impact of Turmoil Before on Turmoil Change" , xlab = "Turmoil Before" , ylab =  "Change in Turmoil")
+
+```
+```{r, results='asis', message = FALSE}
+stargazer::stargazer(turmoil_preturmoil, header = FALSE)
+
+```
+
+```{r, message = FALSE}
+library(tidyverse)
+n_by_year <- leaders %>% group_by(year) %>% summarize(n = n())
+
+plot(n_by_year$year, n_by_year$n)
+
+n_by_year_lm <- lm(n_by_year$n ~ n_by_year$year)
+n_by_year_lm_sum <- summary(n_by_year_lm)
+
+```
+```{r, results='asis', message = FALSE}
+stargazer::stargazer(n_by_year_lm, header = FALSE)
+
+```
 ## Conclusion
 The dependent variable data generally fits into a normal distribution, with the highest frequency of data changes occurring in the middle section, showing the least significant shift in polity following an assassination attempt. (Still working with file, more analysis to follow)
 
