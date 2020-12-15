@@ -11,7 +11,7 @@ options(width = 100)
 
 ## Introduction
 
-Do leaders really impact their governments that significantly? Does the death of a leader, especially in an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will demonstrate a leader's assassination does not have a significant impact on the polity of a country following the event, but an assassination attempt (regardless of success) correlates with an increase in civil wars and/or international conflicts. This discussion also theorizes less democratic governments correlate with an increase in turmoil following an assassination attempt.  
+Do leaders really impact their governments that significantly? Does the death of a leader, especially in an assassination, frequently lead to a change in the type of government, or do the histories and traditions of a country play a larger role in its shaping? This project will seek to demonstrate a leader's assassination does not have a significant impact on the polity of a country following the event, but an assassination attempt (regardless of success) cause with an increase in civil wars and/or international conflicts. This discussion also theorizes less democratic governments cause an increase in turmoil following an assassination attempt.  
 
 ## Data
 ```{r}
@@ -52,6 +52,22 @@ knitr::kable(data.frame(`X-Axis Value`=c(1:10), Results=levels(leaders$result)),
 ```
 The chart above shows more significant policy changes in the section of the chart where the leader died (Assassination Results 1-4). However, there is still some polity change in the remainder of the graph where the leader survived.
 
+```{r}
+death_fit_bin <- lm(leaders$polity.change ~ leaders$result.bin)
+
+death_fit_bin_sum <- summary(death_fit_bin)
+
+boxplot(leaders$polity.change ~ leaders$result.bin, main = "Polity Changes Following an Assassination Attempt" , xlab = "Assassination Attempt Success" , ylab = "Polity Change")
+
+```
+
+```{r, results='asis', message = FALSE}
+stargazer::stargazer(death_fit_bin, header = FALSE, label="label Binary", dep.var.caption = "Polity Change")
+
+```
+
+
+
 In addition to the change in polity, we are evaluating the extent to which the countries in the data experienced increased turmoil following an assassination attempt. If the secondary hypothesis above is correct, an increase in turmoil (civil war OR international war) will correlate with successful assassinations. 
 
 ```{r}
@@ -82,9 +98,11 @@ plot(leaders$politybefore, leaders$turmoil, main = "Impact of Government Type on
 ```
 
 ```{r, results='asis', message = FALSE}
-stargazer::stargazer(turmoil_pretype, header = FALSE, label="label3")
+stargazer::stargazer(turmoil_pretype, header = FALSE, label="label3", dep.var.caption = "Change in Turmoil")
 
 ```
+The graph and table above show a low correlation between the type of government prior to the assassination attempt and the resulting turmoil.
+
 
 ```{r}
 
@@ -94,10 +112,13 @@ turmoil_preturmoil_sum <- summary(turmoil_preturmoil)
 plot(leaders$turmoil, leaders$turmoil_before, main = "Impact of Turmoil Before on Turmoil Change" , xlab = "Turmoil Before" , ylab =  "Change in Turmoil")
 
 ```
+
 ```{r, results='asis', message = FALSE}
-stargazer::stargazer(turmoil_preturmoil, header = FALSE, label="label4")
+stargazer::stargazer(turmoil_preturmoil, header = FALSE, label="label4", dep.var.caption = "Change in Turmoil")
 
 ```
+Table 4 and the above chart demonstrate a higher correlation. Here the r-squared value is .264, which is a relatively high correlation for statistical analysis in the social sciences. Further, the p-value is less than 0.01, indicating there is a very low probability of this correlation appearing by chance. The low p-value allows us to reject the null hypothesis. Turmoil prior to an assassination attempt seems to have a strong causality to the turmoil following an assassination attempt, casting significant doubt on our secondary hypothesis (that assassination attempts cause turmoil).
+
 
 ```{r, message = FALSE}
 library(tidyverse)
